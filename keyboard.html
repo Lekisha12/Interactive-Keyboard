@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Windows Keyboard — Interactive</title>
+<style>
+  :root{--bg:#f8fafc;--card:#ffffff;--ink:#0f1f1f;--border:#cbd5e1;--accent:#0ea5e9;--shadow:rgba(2,6,23,.1)}
+  *{box-sizing:border-box}
+  body{margin:0;background:linear-gradient(180deg,#f1f5f9,#eef2f7);font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;color:var(--ink)}
+  .wrap{max-width:1040px;margin:20px auto;padding:16px}
+  .head{background:linear-gradient(135deg,#0f766e,#06b6d4);color:#fff;padding:14px 16px;border-radius:12px}
+  .head h2{margin:0 0 4px 0;font-size:20px}
+  .board{margin-top:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;box-shadow:0 6px 20px var(--shadow)}
+  .scroll{overflow:auto;padding-bottom:6px}
+  .kb{display:grid;gap:8px;min-width:880px;user-select:none}
+  .row{display:grid;grid-auto-flow:column;gap:6px}
+  .key{
+    position:relative;display:flex;align-items:center;justify-content:center;
+    min-height:38px;padding:8px 10px;border-radius:8px;background:#fff;border:1px solid var(--border);
+    box-shadow:0 2px 0 #c7d2fe;font-size:13px;font-weight:600;letter-spacing:.2px;cursor:pointer
+  }
+  .key[data-tip]::after{
+    content:attr(data-tip);position:absolute;inset:auto auto calc(100% + 8px) 50%;
+    transform:translateX(-50%);background:#0f172a;color:#fff;font-size:12px;padding:6px 8px;border-radius:6px;
+    opacity:0;pointer-events:none;transition:opacity .15s;white-space:nowrap
+  }
+  .key:focus-visible{outline:3px solid rgba(14,165,233,.35)}
+  .key.active{border-color:var(--accent);box-shadow:0 2px 0 #93c5fd,0 0 0 3px rgba(14,165,233,.18);background:#e0f2fe}
+  .key.showtip::after{opacity:1}
+  .wide{min-width:72px}.wider{min-width:96px}
+  .space{grid-column:span 6;min-height:40px}
+  .tab{min-width:70px}.caps{min-width:84px}.shift{min-width:100px}.enter{min-width:94px}.backspace{min-width:94px}
+  .ctrl,.alt,.win{min-width:60px}
+  .legend{display:flex;gap:8px;flex-wrap:wrap;font-size:12px;margin:10px 0 0 0}
+  .legend span{display:inline-flex;gap:6px;align-items:center;padding:2px 8px;border-radius:8px;border:1px solid var(--border);background:#fff}
+  .note{font-size:12px;color:#334155;margin-top:8px}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <h2>⌨️ Windows Keyboard — Interactive</h2>
+      <p style="margin:0;font-size:13px;opacity:.95">Press keys on your keyboard (e.g., <b>Ctrl</b>, <b>S</b>) or click keys to see tips. Works inside an iframe.</p>
+    </div>
+
+    <div class="board">
+      <div class="scroll">
+        <div class="kb" id="kb">
+          <!-- Row 0 -->
+          <div class="row">
+            <div class="key" data-code="Escape" data-tip="Escape: close/cancel">Esc</div>
+            <div style="width:18px"></div>
+            <div class="key" data-code="F1" data-tip="Help">F1</div>
+            <div class="key" data-code="F2" data-tip="Rename">F2</div>
+            <div class="key" data-code="F3" data-tip="Search">F3</div>
+            <div class="key" data-code="F4" data-tip="Alt+F4: Close app">F4</div>
+            <div style="width:18px"></div>
+            <div class="key" data-code="F5" data-tip="Refresh">F5</div>
+            <div class="key" data-code="F6" data-tip="Cycle focus">F6</div>
+            <div class="key" data-code="F7" data-tip="Caret browsing (Edge)">F7</div>
+            <div class="key" data-code="F8" data-tip="Boot options (legacy)">F8</div>
+            <div style="width:18px"></div>
+            <div class="key" data-code="F9">F9</div>
+            <div class="key" data-code="F10">F10</div>
+            <div class="key" data-code="F11" data-tip="Toggle full screen">F11</div>
+            <div class="key" data-code="F12">F12</div>
+            <div style="width:18px"></div>
+            <div class="key" data-code="PrintScreen" data-tip="Screenshot">PrtSc</div>
+            <div class="key" data-code="ScrollLock">ScrLk</div>
+            <div class="key" data-code="Pause">Pause</div>
+          </div>
+
+          <!-- Row 1 -->
+          <div class="row">
+            <div class="key tab" data-code="Tab" data-tip="Tab: move focus">Tab</div>
+            <div class="key" data-code="Backquote" data-tip="~">`</div>
+            <div class="key" data-code="Digit1" data-tip="!">1</div>
+            <div class="key" data-code="Digit2" data-tip="@">2</div>
+            <div class="key" data-code="Digit3" data-tip="#">3</div>
+            <div class="key" data-code="Digit4" data-tip="$">4</div>
+            <div class="key" data-code="Digit5" data-tip="%">5</div>
+            <div class="key" data-code="Digit6" data-tip="^">6</div>
+            <div class="key" data-code="Digit7" data-tip="&amp;">7</div>
+            <div class="key" data-code="Digit8" data-tip="*">8</div>
+            <div class="key" data-code="Digit9" data-tip="(">9</div>
+            <div class="key" data-code="Digit0" data-tip=")">0</div>
+            <div class="key" data-code="Minus" data-tip="_">-</div>
+            <div class="key" data-code="Equal" data-tip="+">=</div>
+            <div class="key backspace" data-code="Backspace" data-tip="Backspace: delete left">Backspace</div>
+          </div>
+
+          <!-- Row 2 -->
+          <div class="row">
+            <div class="key caps" data-code="CapsLock" data-tip="Caps Lock">Caps</div>
+            <div class="key" data-code="KeyQ">Q</div><div class="key" data-code="KeyW">W</div><div class="key" data-code="KeyE">E</div><div class="key" data-code="KeyR">R</div>
+            <div class="key" data-code="KeyT">T</div><div class="key" data-code="KeyY">Y</div><div class="key" data-code="KeyU">U</div><div class="key" data-code="KeyI">I</div>
+            <div class="key" data-code="KeyO">O</div><div class="key" data-code="KeyP">P</div>
+            <div class="key" data-code="BracketLeft" data-tip="{">[</div>
+            <div class="key" data-code="BracketRight" data-tip="}">]</div>
+            <div class="key enter" data-code="Enter" data-tip="Enter: submit/new line">Enter</div>
+          </div>
+
+          <!-- Row 3 -->
+          <div class="row">
+            <div class="key shift" data-code="ShiftLeft" data-tip="Shift (Left)">Shift</div>
+            <div class="key" data-code="KeyA">A</div><div class="key" data-code="KeyS">S</div><div class="key" data-code="KeyD">D</div><div class="key" data-code="KeyF">F</div>
+            <div class="key" data-code="KeyG">G</div><div class="key" data-code="KeyH">H</div><div class="key" data-code="KeyJ">J</div><div class="key" data-code="KeyK">K</div>
+            <div class="key" data-code="KeyL">L</div>
+            <div class="key" data-code="Semicolon" data-tip=":">;</div>
+            <div class="key" data-code="Quote" data-tip='"'>'</div>
+            <div class="key shift" data-code="ShiftRight" data-tip="Shift (Right)">Shift</div>
+          </div>
+
+          <!-- Row 4 -->
+          <div class="row">
+            <div class="key ctrl" data-code="ControlLeft" data-tip="Ctrl (Left)">Ctrl</div>
+            <div class="key win" data-code="MetaLeft" data-tip="Windows (Left)">Win</div>
+            <div class="key alt" data-code="AltLeft" data-tip="Alt (Left)">Alt</div>
+            <div class="key space" data-code="Space" data-tip="Space">Space</div>
+            <div class="key alt" data-code="AltRight" data-tip="Alt (Right)">Alt</div>
+            <div class="key" data-code="ContextMenu" data-tip="Menu / Context">Menu</div>
+            <div class="key ctrl" data-code="ControlRight" data-tip="Ctrl (Right)">Ctrl</div>
+          </div>
+
+          <!-- Edit & arrows -->
+          <div class="row">
+            <div class="key" data-code="Insert" data-tip="Insert">Ins</div>
+            <div class="key" data-code="Home" data-tip="Home">Home</div>
+            <div class="key" data-code="PageUp" data-tip="Page Up">PgUp</div>
+            <div style="width:18px"></div>
+            <div class="key" data-code="Delete" data-tip="Delete">Del</div>
+            <div class="key" data-code="End" data-tip="End">End</div>
+            <div class="key" data-code="PageDown" data-tip="Page Down">PgDn</div>
+            <div style="width:18px"></div>
+            <div class="key" data-code="ArrowUp" data-tip="Arrow Up">↑</div>
+            <div class="key" data-code="ArrowLeft" data-tip="Arrow Left">←</div>
+            <div class="key" data-code="ArrowDown" data-tip="Arrow Down">↓</div>
+            <div class="key" data-code="ArrowRight" data-tip="Arrow Right">→</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="legend">
+        <span><strong>Ctrl + S</strong> Save</span>
+        <span><strong>Ctrl + C</strong> Copy</span>
+        <span><strong>Ctrl + V</strong> Paste</span>
+        <span><strong>Ctrl + Z</strong> Undo</span>
+        <span><strong>Alt + Tab</strong> Switch apps</span>
+        <span><strong>Win + D</strong> Show desktop</span>
+      </div>
+      <p class="note">Tip: Click a key to toggle its tooltip. Press any key on your keyboard to see it highlight.</p>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const kb = document.getElementById('kb');
+  const byCode = {};
+  kb.querySelectorAll('.key[data-code]').forEach(k => {
+    byCode[k.dataset.code] = k;
+    k.addEventListener('click', () => k.classList.toggle('showtip'));
+  });
+
+  function setActive(code, on){
+    const el = byCode[code];
+    if(!el) return;
+    el.classList.toggle('active', !!on);
+    if(on){ // briefly show tip when activated by keyboard
+      el.classList.add('showtip');
+      clearTimeout(el._tipT);
+      el._tipT = setTimeout(()=>el.classList.remove('showtip'), 600);
+    }
+  }
+
+  window.addEventListener('keydown', (e)=>{
+    // Avoid trapping in text fields inside iframe if present
+    if (['INPUT','TEXTAREA'].includes((e.target.tagName||'').toUpperCase())) return;
+    setActive(e.code, true);
+  });
+
+  window.addEventListener('keyup', (e)=> setActive(e.code, false));
+
+  // Handle blur (e.g., Alt+Tab leaves key “stuck”)
+  window.addEventListener('blur', ()=> {
+    Object.values(byCode).forEach(k => k.classList.remove('active'));
+  });
+})();
+</script>
+</body>
+</html>
+
